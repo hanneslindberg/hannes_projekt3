@@ -1,0 +1,38 @@
+task :seed do 
+  require "bundler"
+  Bundler.require
+  require_relative 'db/seeder'
+  Seeder.seed!
+end
+
+task :dev do
+  sh 'bundle exec rerun --ignore "/**/*.{erb,js,css}" --force-polling "rackup --host 0.0.0.0"'
+end
+
+task :run do
+  # Start the Sinatra app in the background
+  pid = spawn('rackup --host 0.0.0.0')
+
+  # sh 'bundle exec rerun --ignore "/**/*.{erb,js,css}" --force-polling "rackup --host 0.0.0.0"'
+
+  # Allow some time for the server to start
+  sleep 5
+
+  # Start ngrok
+  # sh 'ssh -R fruitparadise:80:localhost:9292 serveo.net'
+  sh 'autossh -M 0 -R fruitparadise:80:localhost:9292 serveo.net'
+  # sh 'ngrok-v3-stable-linux-amd64/ngrok http 9292'
+  
+  # Ensure the Sinatra app stops when you kill the Rake task
+  at_exit { Process.kill('TERM', pid) }
+end
+
+task :test do
+  #todo
+end
+
+#sudo rake kill med lösenordet wsp
+#todo testa på windowsdator
+task :kill do
+  sh 'killall ruby && killall rack && killall rerun && pkill -f ruby'
+end
