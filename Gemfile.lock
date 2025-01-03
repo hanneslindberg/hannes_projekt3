@@ -41,6 +41,7 @@ GEM
       tilt (~> 2.0)
     sqlite3 (2.5.0-x86_64-darwin)
     tilt (2.5.0)
+    webrick (1.9.1)
 
 PLATFORMS
   x86_64-darwin-21
@@ -53,6 +54,7 @@ DEPENDENCIES
   sinatra
   sinatra-contrib
   sqlite3
+  webrick
 
 BUNDLED WITH
    2.4.10

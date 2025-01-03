@@ -1,9 +1,12 @@
 require 'bcrypt'
 
 class App < Sinatra::Base
-  helpers do
-      def sendgrid_client
-          @sg ||= SendGrid::API.new(api_key: ENV['SENDGRID_API_KEY'])
-      end
+  def db
+    return @db if @db
+
+    @db = SQLite3::Database.new("db/password_tracker.sqlite")
+    @db.results_as_hash = true
+
+    return @db
   end
 end
